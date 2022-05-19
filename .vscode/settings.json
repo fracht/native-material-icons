@@ -1,0 +1,20 @@
+{
+    "editor.defaultFormatter": "samverschueren.linter-xo",
+    "editor.formatOnSave": true,
+    "xo.enable": true,
+    "xo.format.enable": true,
+    "[json]": {
+        "editor.quickSuggestions": {
+            "strings": true
+        },
+        "editor.suggest.insertMode": "replace",
+        "gitlens.codeLens.scopes": ["document"],
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+}
