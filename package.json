@@ -4,23 +4,24 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "generate": "zxpp ./scripts/download.ts"
+        "test": "echo \"No tests.\"",
+        "generate": "zxpp ./scripts/download.ts",
+        "build": "zxpp ./scripts/build.ts"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@svgr/core": "^6.2.1",
         "@types/number-to-words": "^1.2.1",
         "@types/prettier": "^2.6.1",
         "@types/svgo": "^2.6.3",
+        "esbuild": "^0.14.39",
         "number-to-words": "^1.2.4",
         "prettier": "^2.6.2",
+        "stringify-object": "^4.0.1",
         "svgo": "^2.8.0",
         "xo": "^0.49.0",
         "zxpp": "^0.2.0"
-    },
-    "dependencies": {
-        "@svgr/core": "^6.2.1"
     }
 }

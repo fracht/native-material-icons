@@ -1,37 +1,13 @@
 import { writeFile, rm, mkdir } from 'fs/promises';
 import { optimize as svgoOptimize, OptimizedError as SvgoError, OptimizedSvg } from 'svgo';
-import { transform as transformToReactComponent } from '@svgr/core';
-import { format } from 'prettier';
-import numberToWords from 'number-to-words';
+import { fetchIconMetadata, IconMetadata } from './fetchIconMetadata';
 import { runConcurrently } from './runConcurrently';
 
-const BASE_URL = 'https://fonts.google.com';
-
-const url = new URL('metadata/icons', BASE_URL);
-
-const response = await fetch(url);
-
-const text = await response.text();
-
-type IconMetadata = {
-    name: string;
-    version: number;
-    popularity: number;
-    codepoint: number;
-    unsupported_families: string[];
-    categories: string[];
-    tags: string[];
-    size_px: number[];
-};
-
-type MaterialIconMetadata = {
-    host: string;
-    asset_url_pattern: string;
-    families: string[];
-    icons: IconMetadata[];
-};
-
-const metadata: MaterialIconMetadata = JSON.parse(text.replace(")]}'", '')) as MaterialIconMetadata;
+const metadata = await fetchIconMetadata();
+const normalizedFamilies = metadata.families.map((family) => family.toLowerCase().replace(/\s+/g, ''));
+const prefixes = metadata.families.map((family) =>
+    family.toLowerCase().replace('material icons', '').replace(/\s+/g, '_'),
+);
 
 const fetchIconVariant = async (icon: IconMetadata, fontFamily: string) => {
     const url = new URL(
@@ -48,13 +24,9 @@ const fetchIconVariant = async (icon: IconMetadata, fontFamily: string) => {
     return response.text();
 };
 
-const normalizedFamilies = metadata.families.map((family) => family.toLowerCase().replace(/\s+/g, ''));
-
-const prefixes = metadata.families.map((family) =>
-    family.toLowerCase().replace('material icons', '').replace(/\s+/g, '_'),
-);
-
-const isOptimizedImage = (value: unknown): value is OptimizedSvg => typeof (value as OptimizedSvg).data === 'string';
+const isOptimizedImage = (value: unknown): value is OptimizedSvg => {
+    return typeof (value as OptimizedSvg).data === 'string';
+};
 
 const optimizeSvg = (data: string) => {
     /* Shamelessly stolen from https://github.com/mui/material-ui/blob/d3b0096257b986d47dc74b18e42cb306bea6b814/packages/mui-icons-material/builder.js */
@@ -123,21 +95,6 @@ const optimizeSvg = (data: string) => {
     return result.data;
 };
 
-const getComponentName = (sourceName: string) => {
-    sourceName = sourceName.replace(/\d+/, (value) => {
-        return numberToWords.toWords(Number(value)).replace(/\W+/g, '_');
-    });
-
-    const words = sourceName
-        .split('_')
-        .filter(Boolean)
-        .map((value) => {
-            return value.charAt(0).toUpperCase().concat(value.slice(1));
-        });
-
-    return words.join('');
-};
-
 const downloadIcon = async (icon: IconMetadata) => {
     const resources = normalizedFamilies.map(async (family, index) => {
         const svg = await fetchIconVariant(icon, family);
@@ -145,35 +102,7 @@ const downloadIcon = async (icon: IconMetadata) => {
         const optimizedSvg = optimizeSvg(svg);
 
         if (optimizedSvg !== null) {
-            await writeFile(`./icons/${icon.name}${prefixes[index]}.svg`, optimizedSvg);
-
-            const componentName = getComponentName(`${icon.name}${prefixes[index]}`);
-            const component = await transformToReactComponent(
-                optimizedSvg,
-                {
-                    typescript: true,
-                    native: true,
-                    prettier: false,
-                },
-                { componentName },
-            );
-
-            const formattedComponentOutput = format(component, {
-                tabWidth: 4,
-                printWidth: 120,
-                trailingComma: 'all',
-                singleQuote: true,
-                useTabs: false,
-                arrowParens: 'always',
-                bracketSameLine: false,
-                bracketSpacing: true,
-                embeddedLanguageFormatting: 'auto',
-                jsxSingleQuote: false,
-                endOfLine: 'auto',
-                parser: 'typescript',
-            });
-
-            await writeFile(`./src/${componentName}.tsx`, formattedComponentOutput);
+            await writeFile(`./icons/${icon.name}${prefixes[family]}.svg`, optimizedSvg);
         }
     });
 
@@ -181,13 +110,13 @@ const downloadIcon = async (icon: IconMetadata) => {
 };
 
 try {
-    await rm('src', { recursive: true, force: true });
     await rm('icons', { recursive: true, force: true });
 
-    await mkdir('src');
     await mkdir('icons');
 
-    await runConcurrently(metadata.icons, downloadIcon);
+    const { total, failed, succeed } = await runConcurrently(metadata.icons, downloadIcon);
+
+    console.log(`Ran ${total} in parallel, ${succeed} succeed, ${failed} failed.`);
 } catch (error: unknown) {
     console.error(error);
 }
