@@ -76,10 +76,6 @@ export const buildSvg = (svg: string, componentName: string) => {
                     }
 
                     for (const [index, svgChild] of svg.children.entries()) {
-                        if (svgChild.children.length > 0) {
-                            console.log(componentName);
-                        }
-
                         if (svgChild.name === 'path') {
                             paths.push({ ...svgChild.attributes });
                         } else {

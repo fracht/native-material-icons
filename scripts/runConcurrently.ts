@@ -24,7 +24,7 @@ export const runConcurrently = async <T, V>(
     await new Promise<void>((resolve) => {
         const enqueue = () => {
             while (currentlyRunning < concurrency && queue.length > 0) {
-                const [value, index] = queue.shift();
+                const [value, index] = queue.shift()!;
                 ++total;
                 exec(value)
                     .then((result) => {
@@ -43,7 +43,7 @@ export const runConcurrently = async <T, V>(
                 ++currentlyRunning;
             }
 
-            if (queue.length === 0) {
+            if (queue.length === 0 && currentlyRunning === 0) {
                 resolve();
             }
         };

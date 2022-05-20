@@ -102,7 +102,7 @@ const downloadIcon = async (icon: IconMetadata) => {
         const optimizedSvg = optimizeSvg(svg);
 
         if (optimizedSvg !== null) {
-            await writeFile(`./icons/${icon.name}${prefixes[family]}.svg`, optimizedSvg);
+            await writeFile(`./icons/${icon.name}${prefixes[index]}.svg`, optimizedSvg);
         }
     });
 

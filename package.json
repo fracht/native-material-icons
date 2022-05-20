@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"No tests.\"",
-        "generate": "zxpp ./scripts/download.ts",
+        "download": "zxpp ./scripts/download.ts",
         "build": "zxpp ./scripts/build.ts"
     },
     "keywords": [],
