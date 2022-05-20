@@ -1,14 +1,15 @@
 {
     "name": "native-material-icons",
-    "version": "0.0.0",
+    "version": "0.0.4",
     "description": "Material Design icons for react native.",
     "main": "index.js",
     "scripts": {
         "test": "echo \"No tests.\"",
         "download": "zxpp ./scripts/download.ts",
         "build": "zxpp ./scripts/build.ts",
-        "prepare": "zxpp ./scripts/prepare.ts",
-        "release": "npm publish --prefix ./dist"
+        "copy-necessities": "zxpp ./scripts/copy-necessities.ts",
+        "do-publish": "zxpp ./scripts/publish.ts",
+        "release": "npm run download && npm run build && npm run copy-necessities && npm run do-publish"
     },
     "keywords": [
         "icons",
