@@ -1,27 +1,34 @@
 {
     "name": "native-material-icons",
-    "version": "1.0.0",
-    "description": "",
+    "version": "0.0.0",
+    "description": "Material Design icons for react native.",
     "main": "index.js",
     "scripts": {
         "test": "echo \"No tests.\"",
         "download": "zxpp ./scripts/download.ts",
-        "build": "zxpp ./scripts/build.ts"
+        "build": "zxpp ./scripts/build.ts",
+        "prepare": "zxpp ./scripts/prepare.ts"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
+    "keywords": [
+        "icons",
+        "material-icons",
+        "react-native"
+    ],
+    "author": "Artiom Tretjakovas",
+    "license": "MIT",
     "devDependencies": {
-        "@svgr/core": "^6.2.1",
         "@types/number-to-words": "^1.2.1",
-        "@types/prettier": "^2.6.1",
         "@types/svgo": "^2.6.3",
-        "esbuild": "^0.14.39",
         "number-to-words": "^1.2.4",
-        "prettier": "^2.6.2",
+        "react": "^17.0.2",
+        "react-native-svg": "^12.3.0",
         "stringify-object": "^4.0.1",
         "svgo": "^2.8.0",
         "xo": "^0.49.0",
         "zxpp": "^0.2.0"
+    },
+    "peerDependencies": {
+        "react": "^17.0.0 || ^18.0.0",
+        "react-native-svg": "^12.0.0"
     }
 }
