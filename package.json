@@ -7,13 +7,17 @@
         "test": "echo \"No tests.\"",
         "download": "zxpp ./scripts/download.ts",
         "build": "zxpp ./scripts/build.ts",
-        "prepare": "zxpp ./scripts/prepare.ts"
+        "prepare": "zxpp ./scripts/prepare.ts",
+        "release": "npm publish --prefix ./dist"
     },
     "keywords": [
         "icons",
         "material-icons",
         "react-native"
     ],
+    "repository": {
+        "url": "https://github.com/ArtiomTr/native-material-icons"
+    },
     "author": "Artiom Tretjakovas",
     "license": "MIT",
     "devDependencies": {

@@ -15,10 +15,20 @@ declare const ${componentName}: ComponentType<SvgProps>;
 export default ${componentName};
 `.trimStart();
 
+const toWords = (value: string) => {
+    return numberToWords.toWords(Number(value)).replace(/\W+/g, '_');
+};
+
 const getComponentName = (sourceName: string) => {
-    sourceName = sourceName.replace(/\d+/, (value) => {
-        return numberToWords.toWords(Number(value)).replace(/\W+/g, '_');
-    });
+    sourceName = sourceName
+        .replace(/\d+\w/g, (value) => {
+            const lastChar = value[value.length - 1];
+
+            const numberSource = value.slice(0, -1);
+
+            return toWords(numberSource).concat(lastChar.toUpperCase());
+        })
+        .replace(/\d+/g, toWords);
 
     const words = sourceName
         .split('_')
