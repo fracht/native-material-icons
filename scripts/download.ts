@@ -24,6 +24,8 @@ const fetchIconVariant = async (icon: IconMetadata, fontFamily: string) => {
     return response.text();
 };
 
+const ignored = new Set(['add_chart']);
+
 const isOptimizedImage = (value: unknown): value is OptimizedSvg => {
     return typeof (value as OptimizedSvg).data === 'string';
 };
@@ -114,7 +116,10 @@ try {
 
     await mkdir('icons');
 
-    const { total, failed, succeed } = await runConcurrently(metadata.icons, downloadIcon);
+    const { total, failed, succeed } = await runConcurrently(
+        metadata.icons.filter((value) => !ignored.has(value.name)),
+        downloadIcon,
+    );
 
     console.log(`Ran ${total} in parallel, ${succeed} succeed, ${failed} failed.`);
 } catch (error: unknown) {

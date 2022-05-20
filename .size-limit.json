@@ -1,0 +1,7 @@
+[
+    {
+        "path": "./dist/index.js",
+        "import": "{ Abc }",
+        "limit": "80kb"
+    }
+]

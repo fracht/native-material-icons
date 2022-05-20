@@ -4,40 +4,39 @@ import { parse } from 'path';
 import numberToWords from 'number-to-words';
 import { runConcurrently } from './runConcurrently';
 import { buildSvg } from './buildSvg';
+import { capitalize } from './capitalize';
 
 const getComponentTypings = (componentName) =>
     `
-import { ComponentType } from 'react';
-import { SvgProps } from 'react-native-svg';
+import { SvgIconComponent } from './typings';
 
-declare const ${componentName}: ComponentType<SvgProps>;
-
-export default ${componentName};
+export default const ${componentName}: SvgIconComponent;
 `.trimStart();
 
 const toWords = (value: string) => {
-    return numberToWords.toWords(Number(value)).replace(/\W+/g, '_');
+    return numberToWords.toWords(Number(value)).replace(/\W+/g, '_').split('_').map(capitalize).join('');
 };
 
 const getComponentName = (sourceName: string) => {
-    sourceName = sourceName
-        .replace(/\d+\w/g, (value) => {
-            const lastChar = value[value.length - 1];
+    const words = sourceName.split('_').filter(Boolean);
 
-            const numberSource = value.slice(0, -1);
+    if (!Number.isNaN(Number(words[0].charAt(0)))) {
+        if (Number.isNaN(Number(words[0]))) {
+            words[0] = words[0].replace(/\d+\w/g, (value) => {
+                const lastChar = value[value.length - 1];
 
-            return toWords(numberSource).concat(lastChar.toUpperCase());
-        })
-        .replace(/\d+/g, toWords);
+                const numberSource = value.slice(0, -1);
 
-    const words = sourceName
-        .split('_')
-        .filter(Boolean)
-        .map((value) => {
-            return value.charAt(0).toUpperCase().concat(value.slice(1));
-        });
+                return toWords(numberSource).concat(lastChar.toUpperCase());
+            });
+        } else {
+            words[0] = toWords(words[0]);
+        }
+    }
 
-    return words.join('');
+    const capitalizedWords = words.map(capitalize);
+
+    return capitalizedWords.join('');
 };
 
 const buildIcon = async (iconSvgPath: string) => {
@@ -52,17 +51,39 @@ const buildIcon = async (iconSvgPath: string) => {
     await writeFile(`./dist/${componentName}.d.ts`, getComponentTypings(componentName));
 };
 
+const generateEntrypoint = async (files: string[]) => {
+    let entryJsOut = '';
+    let entryTsOut = "import { SvgIconComponent } from './types';\n";
+
+    for (const iconFile of files) {
+        const { name: iconName } = parse(iconFile);
+
+        const componentName = getComponentName(iconName);
+
+        entryJsOut += `export { default as ${componentName} } from './${componentName}';\n`;
+        entryTsOut += `export declare const ${componentName}: SvgIconComponent;\n`;
+    }
+
+    await writeFile('./dist/index.js', entryJsOut);
+    await writeFile('./dist/index.d.ts', entryTsOut);
+};
+
 try {
     await rm('dist', { recursive: true, force: true });
     await mkdir('dist');
 
     await copyFile('./src/utils.js', './dist/u.js');
+    await copyFile('./src/types.d.ts', './dist/types.d.ts');
 
     const icons = await readdir('./icons');
 
     const { total, failed, succeed } = await runConcurrently(icons, buildIcon, 16);
 
     console.log(`Ran ${total} in parallel, ${succeed} succeed, ${failed} failed.`);
+
+    await generateEntrypoint(icons);
+
+    console.log('Generated entrypoints');
 } catch (error: unknown) {
     console.error(error);
 }

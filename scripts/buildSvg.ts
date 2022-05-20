@@ -1,6 +1,7 @@
 import { optimize as svgoOptimize } from 'svgo';
 
 import stringifyObject from 'stringify-object';
+import { capitalize } from './capitalize';
 
 const elementNameId = {
     Rect: 'a',
@@ -27,7 +28,6 @@ const elementNameId = {
     ForeignObject: 'y',
 };
 
-const capitalize = (value: string) => value.charAt(0).toUpperCase().concat(value.slice(1));
 const uniq = <T>(array: T[]): T[] => [...new Set(array)];
 const tinyStringifyObject = (object: unknown): string =>
     stringifyObject(object).replace(/\t|\n/g, '').replace(/: /g, ':');
@@ -105,17 +105,19 @@ export const buildSvg = (svg: string, componentName: string) => {
             }
 
             return `${value} as ${transformed}`;
-        })}}from'react-native-svg';import{jsx as h}from'react/jsx-runtime';export default c([${results.map(
+        })}}from'react-native-svg';import{jsx as h}from'react/jsx-runtime';export default/*#__PURE__*/c([${results.map(
             ([element]) => element,
         )}],'${componentName}')`;
     }
 
     if (paths.length === 1) {
-        return `import{s}from'./u';export default s(${tinyStringifyObject(paths[0])},'${componentName}')`;
+        return `import{s}from'./u';export default/*#__PURE__*/s(${tinyStringifyObject(paths[0])},'${componentName}')`;
     }
 
     if (paths.length > 1) {
-        return `import{m}from'./u';export default m([${paths.map(tinyStringifyObject)}],'${componentName}')`;
+        return `import{m}from'./u';export default/*#__PURE__*/m([${paths.map(
+            tinyStringifyObject,
+        )}],'${componentName}')`;
     }
 
     throw new Error('No found');
