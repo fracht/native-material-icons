@@ -27,10 +27,11 @@
 ## Why this library?
 
 Because it is:
-* 📦 Tiny - each downloaded svg is optimized by [svgo](https://github.com/svg/svgo#readme) and minified. This results in **0.5 kilobytes** icon size in average.
-* 🌳 Tree shakable - your app won't grow dramatically, metro will automatically throw out unused icons from the bundle, resulting in small bundle size.
-* 💪 Strongly typed - comes with TypeScript declarations, which will help you avoid common mistakes.
-* 👋 Developer-friendly - doesn't require any additional configuration - simply install [react-native-svg](https://github.com/react-native-svg/react-native-svg#readme) as well as this package, and instantly begin using awesome icons.
+
+-   📦 Tiny - each downloaded svg is optimized by [svgo](https://github.com/svg/svgo#readme) and minified. This results in **0.5 kilobytes** icon size in average.
+-   🌳 Tree shakable - your app won't grow dramatically, metro will automatically throw out unused icons from the bundle, resulting in small bundle size.
+-   💪 Strongly typed - comes with TypeScript declarations, which will help you avoid common mistakes.
+-   👋 Developer-friendly - doesn't require any additional configuration - simply install [react-native-svg](https://github.com/react-native-svg/react-native-svg#readme) as well as this package, and instantly begin using awesome icons.
 
 ## Installation
 

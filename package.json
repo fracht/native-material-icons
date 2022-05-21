@@ -10,6 +10,7 @@
         "build": "zxpp ./scripts/build.ts",
         "copy-necessities": "zxpp ./scripts/copy-necessities.ts",
         "do-publish": "zxpp ./scripts/publish.ts",
+        "icon-size": "zxpp ./scripts/average-icon-size.ts",
         "release": "npm run download && npm run build && npm run copy-necessities && npm run do-publish"
     },
     "keywords": [
