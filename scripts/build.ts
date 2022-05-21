@@ -10,7 +10,8 @@ const getComponentTypings = (componentName) =>
     `
 import { SvgIconComponent } from './typings';
 
-export default const ${componentName}: SvgIconComponent;
+declare const ${componentName}: SvgIconComponent;
+export default ${componentName};
 `.trimStart();
 
 const toWords = (value: string) => {
@@ -34,7 +35,7 @@ const getComponentName = (sourceName: string) => {
         }
     }
 
-    const capitalizedWords = words.map(capitalize);
+    const capitalizedWords = words.map(capitalize).concat('Icon');
 
     return capitalizedWords.join('');
 };
