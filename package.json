@@ -1,7 +1,7 @@
 {
     "name": "native-material-icons",
     "version": "0.0.7",
-    "description": "Material Design icons for react native.",
+    "description": "Material Design icons for React Native.",
     "module": "index.js",
     "types": "index.d.ts",
     "scripts": {
@@ -15,7 +15,9 @@
     "keywords": [
         "icons",
         "material-icons",
-        "react-native"
+        "react-native",
+        "material-native",
+        "react-material-native"
     ],
     "repository": {
         "url": "https://github.com/ArtiomTr/native-material-icons"
