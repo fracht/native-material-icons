@@ -8,7 +8,7 @@ import { capitalize } from './capitalize';
 
 const getComponentTypings = (componentName) =>
     `
-import { SvgIconComponent } from './typings';
+import { SvgIconComponent } from './types';
 
 declare const ${componentName}: SvgIconComponent;
 export default ${componentName};
