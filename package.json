@@ -1,6 +1,6 @@
 {
     "name": "native-material-icons",
-    "version": "0.0.7",
+    "version": "0.1.0",
     "description": "Material Design icons for React Native.",
     "module": "index.js",
     "types": "index.d.ts",
