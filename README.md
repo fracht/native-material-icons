@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="./assets/Media%20Preview.jpg" alt="Native Material Icons - Tiny Material Design icons for React Native." />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/Media%20Preview.jpg">
+    <img alt="Native Material Icons - Tiny Material Design icons for React Native." src="./assets/Media%20Preview%20(Light).jpg">
+  </picture>
 </p>
 
 <p align="center">
