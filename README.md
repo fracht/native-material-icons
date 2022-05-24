@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="/ArtiomTr/native-material-icons/blob/main/assets/Media%20Preview.jpg">
-    <img alt="Native Material Icons - Tiny Material Design icons for React Native." src="/ArtiomTr/native-material-icons/blob/main/assets/Media%20Preview%20(Light).jpg">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ArtiomTr/native-material-icons/main/assets/Media%20Preview.jpg">
+    <img alt="Native Material Icons - Tiny Material Design icons for React Native." src="https://raw.githubusercontent.com/ArtiomTr/native-material-icons/main/assets/Media%20Preview%20(Light).jpg">
   </picture>
 </p>
 
